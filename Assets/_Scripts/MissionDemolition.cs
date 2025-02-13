@@ -54,6 +54,7 @@
          UpdateGUI();
  
          mode = GameMode.playing;
+         FollowCam.SWITCH_VIEW( FollowCam.eView.both );
      }
  
      void UpdateGUI() {
@@ -69,6 +70,7 @@
          if ( (mode == GameMode.playing) && Goal.goalMet ) {
              // Change mode to stop checking for level end
              mode = GameMode.levelEnd;
+             FollowCam.SWITCH_VIEW( FollowCam.eView.both );
              
              // Start the next level in 2 seconds
              Invoke("NextLevel", 2f);                                           // e
