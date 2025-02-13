@@ -24,6 +24,7 @@ public class Projectile : MonoBehaviour{
         awake = true;
         prevPos = new Vector3(1000,1000,0);
         deltas.Add( 1000 );
+        PROJECTILES.Add( this );
     }
 
     // Update is called once per frame
