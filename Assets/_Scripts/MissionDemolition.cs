@@ -41,17 +41,54 @@ public class MissionDemolition : MonoBehaviour {
     }
    
     
-    void Start(){
-    S = this; 
+    void Start() { 
+        S = this; 
     
-    level = 0;
-    shotsTaken = 0;
-
+        level = 0;
+        shotsTaken = 0;
+        levelMax = castles.Length;
+        StartLevel();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    void StartLevel() {
+        if (castle != null) {
+             Destroy(castle);
+    }
+
+        Projectile.DESTROY_PROJECTILES();
+
+        castle = Instatiate<GameObject>(castles[level]);
+        castle.trasnsform.position = castlePos;
+
+        Goal.goalMet = false;
+        UpdateGUI():
+        mode = GameMode.playing;
         
+    }
+    void UpdateGUI(){
+        uitLevels.text = "Level: " + (level + 1) + " of " + levelMax;
+        uitShots.text = "Shots Taken: " + shotsTaken;
+    }
+    void Update(){
+        UpdateGUI():
+        if ( (mode == GameMode.playing) && Goal.goalMet){
+            mode = GameMode.levelEnd;
+            Invoke("NextLevel", 2f);
+        }
+    }
+
+
+    void NextLevel(){
+        
+        level++;
+        if (level == levleMax){
+            level == 0;
+        shotsTaken = 0; 
+
+        }
+        StartLevel(); 
+    }
+    static public void SHOT_FIRED(){
+        return S.castle
     }
 }
