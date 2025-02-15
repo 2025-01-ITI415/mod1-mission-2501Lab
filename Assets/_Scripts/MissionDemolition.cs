@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI; 
 
@@ -18,30 +16,35 @@ public class MissionDemolition : MonoBehaviour {
 
     [Header("Inscribed")]
 
-    public Text uitLevel;
+    public Text     uitLevel;
 
-    public Text uitShots;
+    public Text         uitShots;
 
-    public Vector3 castlePos;
+    public Vector3      castlePos;
 
     public GameObject[] castles;
 
 
     [Header("Dynamic")]
-    public int level;
 
-    public GameObject castle;
+    public int          level;
 
-    public GameMode mode = GameMode.idle;
+    public int          levelMax;
 
-    public string showing = "Show SLingshot";
+    public int          shotsTaken;
+    public GameObject   castle;
+
+    public GameMode     mode = GameMode.idle;
+
+    public string       showing = "Show SLingshot";
 
 
 
-    }
-   
     
-    void Start() { 
+
+
+    void Start()
+    {
         S = this; 
     
         level = 0;
@@ -53,26 +56,28 @@ public class MissionDemolition : MonoBehaviour {
     void StartLevel() {
         if (castle != null) {
              Destroy(castle);
-    }
+        }
 
         Projectile.DESTROY_PROJECTILES();
 
-        castle = Instatiate<GameObject>(castles[level]);
-        castle.trasnsform.position = castlePos;
+        castle = Instantiate<GameObject>(castles[level]);
+        castle.transform.position = castlePos;
 
         Goal.goalMet = false;
-        UpdateGUI():
+        UpdateGUI();
         mode = GameMode.playing;
-        
+        FollowCam.SWITCH_VIEW(FollowCam.eView.both);
     }
     void UpdateGUI(){
-        uitLevels.text = "Level: " + (level + 1) + " of " + levelMax;
-        uitShots.text = "Shots Taken: " + shotsTaken;
+        uitLevel.text = "Level: " +(level+1)+" of "+ levelMax;
+        uitShots.text = "Shots Taken: " +shotsTaken;
     }
     void Update(){
-        UpdateGUI():
+        UpdateGUI();
         if ( (mode == GameMode.playing) && Goal.goalMet){
             mode = GameMode.levelEnd;
+            FollowCam.SWITCH_VIEW(FollowCam.eView.both);
+
             Invoke("NextLevel", 2f);
         }
     }
@@ -81,14 +86,19 @@ public class MissionDemolition : MonoBehaviour {
     void NextLevel(){
         
         level++;
-        if (level == levleMax){
-            level == 0;
-        shotsTaken = 0; 
+        if (level == levelMax){
+            level = 0;
+            shotsTaken = 0; 
 
         }
         StartLevel(); 
     }
-    static public void SHOT_FIRED(){
-        return S.castle
+    static public void SHOT_FIRED() {
+        S.shotsTaken++;
+    }
+
+
+    static public GameObject GET_CASTLE() {
+        return S.castle;
     }
 }
