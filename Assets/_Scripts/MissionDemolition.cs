@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI;                                                             // a
 
-public enum GameMode{
+public enum GameMode
+{                                                            // b
     idle,
     playing,
     levelEnd
@@ -11,76 +12,103 @@ public enum GameMode{
 
 public class MissionDemolition : MonoBehaviour
 {
-    // Start is called before the first frame update
+    static private MissionDemolition S; // a private Singleton                    // c
+
     [Header("Inscribed")]
-    public Text               uitLevel;  // The UIText_Level Text
-    public Text               uitShots;  // The UIText_Shots Text
-    public Vector3            castlePos; // The place to put castles
-    public GameObject[]       castles;   // An array of the castles
+    public Text uitLevel;  // The UIText_Level Text
+    public Text uitShots;  // The UIText_Shots Text
+    public Vector3 castlePos; // The place to put castles
+    public GameObject[] castles;   // An array of the castles
 
     [Header("Dynamic")]
-    public int                level;     // The current level
-    public int                levelMax;  // The number of levels
-    public int                shotsTaken;
-    public GameObject         castle;    // The current castle
-    public GameMode           mode = GameMode.idle;
-    public string             showing = "Show Slingshot"; // FollowCam mode
-
+    public int level;     // The current level
+    public int levelMax;  // The number of levels
+    public int shotsTaken;
+    public GameObject castle;    // The current castle
+    public GameMode mode = GameMode.idle;
+    public string showing = "Show Slingshot"; // FollowCam mode
 
     void Start()
     {
-        S = this;
+        S = this; // Define the Singleton                                      // c
+
         level = 0;
         shotsTaken = 0;
         levelMax = castles.Length;
-       StartLevel();
+        StartLevel();
     }
 
-    void StartLevel(){
-        if (castle != null){
+    void StartLevel()
+    {
+        // Get rid of the old castle if one exists
+        if (castle != null)
+        {
             Destroy(castle);
         }
-        Projectile.DESTROY_PROJECTILES();
 
+        // Destroy old projectiles if they exist (the method is not yet written)
+        Projectile.DESTROY_PROJECTILES(); // This will be underlined in red  // d
+
+        // Instantiate the new castle
         castle = Instantiate<GameObject>(castles[level]);
         castle.transform.position = castlePos;
 
-        global.goalMet = false;
+        // Reset the goal
+        Goal.goalMet = false;
 
         UpdateGUI();
 
         mode = GameMode.playing;
-    }
 
-    void UpdateGUI(){
-        uitLevel.text = "Level: " +(level+1) " of " + levelMax;
+        // Zoom out to show both
+        FollowCam.SWITCH_VIEW(FollowCam.eView.both);                              // a
+     }
+
+
+     void UpdateGUI()
+      {
+        // Show the data in the GUITexts
+        uitLevel.text = "Level: " + (level + 1) + " of " + levelMax;
         uitShots.text = "Shots Taken: " + shotsTaken;
-    }
+      }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateGUI();
 
-        if ((mode == GameMode.playing) && Goal.goalMet){
-            mode = GameMode.levelEnd
-            Invoke("NextLevel", 2f);
+        // Check for level end
+        if ((mode == GameMode.playing) && Goal.goalMet)
+        {
+            // Change mode to stop checking for level end
+            mode = GameMode.levelEnd;
+            // Zoom out to show both
+            FollowCam.SWITCH_VIEW(FollowCam.eView.both);                           // b           
+
+            // Start the next level in 2 seconds
+            Invoke("NextLevel", 2f);                                           // e
         }
     }
-    void NextLevel(){
+
+    void NextLevel()
+    {                                                         // e
         level++;
-        if (level == levelMax){
+        if (level == levelMax)
+        {
             level = 0;
-            shotsTaken =0;
+            shotsTaken = 0;
         }
         StartLevel();
     }
 
-    static public void SHOT_FIRED(){
+    // Static method that allows code anywhere to increment shotsTaken
+    static public void SHOT_FIRED()
+    {                                          // f
         S.shotsTaken++;
     }
 
-    static public GameObject GET_CASTLE(){
+    // Static method that allows code anywhere to get a reference to S.castle
+    static public GameObject GET_CASTLE()
+    {                                   // g
         return S.castle;
     }
 }
