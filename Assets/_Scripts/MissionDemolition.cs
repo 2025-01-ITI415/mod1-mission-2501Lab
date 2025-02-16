@@ -36,7 +36,7 @@ public class MissionDemolition : MonoBehaviour {
 
     public GameMode     mode = GameMode.idle;
 
-    public string       showing = "Show SLingshot";
+    public string       showing = "Show Slingshot";
 
 
 
