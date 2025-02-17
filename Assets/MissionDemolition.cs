@@ -46,7 +46,11 @@ public class MissionDemolition : MonoBehaviour {
 
         Goal.goalMet = false;
 
+        UpdateGUI();
+
         mode = GameMode.playing;
+
+        FollowCam.SWITCH_VIEW(FollowCam.eView.both);
     }
 
     void UpdateGUI() {
@@ -59,7 +63,8 @@ public class MissionDemolition : MonoBehaviour {
 
         if((mode == GameMode.playing) && Goal.goalMet) {
             mode = GameMode.levelEnd;
-
+            
+            FollowCam.SWITCH_VIEW(FollowCam.eView.both);
             Invoke("NextLevel", 2f);
         }
     }

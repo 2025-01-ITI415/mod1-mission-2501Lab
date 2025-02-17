@@ -10,9 +10,11 @@ public class FollowCam : MonoBehaviour{
 
     [Header("Inscribed")]
     public float easing = 0.05f;
-
     public Vector2 minXY = Vector2.zero;
     public GameObject viewBothGO;
+
+    private float targetOrthoSize = 10f;
+    public float zoomSpeed = 2f;
 
     [Header("Dynamic")]
     public float camZ;
@@ -20,37 +22,33 @@ public class FollowCam : MonoBehaviour{
 
     void Awake(){
         S = this;
-        camZ = this. transform.position.z;
+        camZ = this.transform.position.z;
     }
 
-    void FixedUpdate(){
+    void FixedUpdate() {
+
         Vector3 destination = Vector3.zero;
-
-        if(POI!= null){
-
+        if (POI != null) {
             Rigidbody poiRigid = POI.GetComponent<Rigidbody>();
-            if ((poiRigid != null) && poiRigid.IsSleeping()){
+            if ((poiRigid != null) && poiRigid.IsSleeping()) {
                 POI = null;
             }
         }
-
-        if(POI != null){
+        if (POI != null) {
             destination = POI.transform.position;
         }
-    //    if(POI == null) return;
 
-    //    Vector3 destination = POI.transform.position;
-    
         destination.x = Mathf.Max(minXY.x, destination.x);
         destination.y = Mathf.Max(minXY.y, destination.y);
 
         destination = Vector3.Lerp(transform.position, destination, easing);
-
-        destination.z = camZ;
-
+        destination.z=camZ;
         transform.position = destination;
 
-        Camera.main.orthographicSize = destination.y + 10;
+        //Camera.main.orthographicSize = 20;
+        destination.y = Mathf.Max(minXY.y, destination.y);
+        Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, targetOrthoSize, Time.deltaTime * zoomSpeed);
+        //Camera.main.orthographicSize = destination.y = 10;
     }
 
     public void SwitchView(eView newView) {
@@ -60,19 +58,24 @@ public class FollowCam : MonoBehaviour{
         switch (newView) {
         case eView.slingshot:
             POI = null;
+            targetOrthoSize = 10;
             nextView = eView.castle;
             break;
         case eView.castle:
             POI = MissionDemolition.GET_CASTLE();
+            targetOrthoSize = 10;
             nextView = eView.both;
             break;
         case eView.both:
             POI = viewBothGO;
+            targetOrthoSize = 24;
             nextView = eView.slingshot;
             break;
         }
     }
-    
+    public void SwitchView() {
+        SwitchView(eView.none);
+    }
     static public void SWITCH_VIEW(eView newView) {
         S.SwitchView(newView);
     }
