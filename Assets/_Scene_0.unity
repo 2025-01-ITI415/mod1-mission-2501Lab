@@ -798,6 +798,7 @@ MonoBehaviour:
   castles:
   - {fileID: 1714873935392641797, guid: 628813f436dc6354596b2ff03515386f, type: 3}
   - {fileID: 1714873935392641797, guid: b5a40427b4f734851bfaee16c593e302, type: 3}
+  - {fileID: 1714873935392641797, guid: 4ad8f5c44884a49a58362ed33a8522e8, type: 3}
   level: 0
   levelMax: 0
   shotsTaken: 0
@@ -1132,7 +1133,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -530}
+  m_AnchoredPosition: {x: 0, y: -35}
   m_SizeDelta: {x: 200, y: 40}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1735802248
