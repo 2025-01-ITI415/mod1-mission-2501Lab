@@ -61,7 +61,7 @@ public class Slingshot : MonoBehaviour{
     Vector3 projPos = launchPos + mouseDelta;
     projectile.transform.position = projPos;
 
-    if(Input.GetMouseButtonUp(0)){
+    if ( Input.GetMouseButtonUp(0) ) {
 
         aimingMode = false;
         Rigidbody projRB = projectile.GetComponent<Rigidbody>();
@@ -71,6 +71,7 @@ public class Slingshot : MonoBehaviour{
         FollowCam.POI = projectile;
         Instantiate<GameObject>(projLinePrefab, projectile.transform);
         projectile = null;
+        MissionDemolition.SHOT_FIRED();
     }
  }
 }
