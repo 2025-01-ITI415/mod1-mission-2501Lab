@@ -9,7 +9,7 @@ public class LevelMenu : MonoBehaviour
     public Button[] buttons;
     // Unlocks only when previous level has been unlocked
     private void Awake() {
-        int unlockedLevel = PlayerPrefs.GetInt("unlockedLevel", 1);
+        int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
         for (int i = 0; i < buttons.Length; i++){
             buttons[i].interactable = false;
         }
