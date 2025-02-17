@@ -56,6 +56,8 @@ public class MissionDemolition : MonoBehaviour
         UpdateGUI();
 
         mode = GameMode.playing;
+
+        FollowCam.SWITCH_VIEW(FollowCam.eView.both);
     }
 
     // Update is called once per frame
@@ -71,6 +73,8 @@ public class MissionDemolition : MonoBehaviour
         if ( (mode == GameMode.playing) && Goal.goalMet ) {
 
             mode = GameMode.levelEnd;
+
+            FollowCam.SWITCH_VIEW(FollowCam.eView.both);
 
             Invoke("NextLevel", 2f);
         }
