@@ -6,7 +6,15 @@ public class FollowCam : MonoBehaviour{
     static private FollowCam S;     // Another private Singleton 
     static public GameObject POI;   // The static point of interest 
 
-    public enum eView { none, slingshot, castle, both };
+
+    // FIX FORMAT - cleaning up so easier to read
+    public enum eView
+    {
+        none,
+        slingshot,
+        castle,
+        both
+    };
 
     [Header("Inscribed")]
     public float easing = 0.05f;
@@ -62,8 +70,9 @@ public class FollowCam : MonoBehaviour{
         POI = null;
         nextView = eView.castle;
         break;
-        case eVIEW.castle:
-        POI = MissionDemolition.GET_CASTLE();
+        // FIX ERROR - doesn't need capitals case eVIEW.castle:
+        case eView.castle:
+                POI = MissionDemolition.GET_CASTLE();
         nextView = eView.both;
         break;
         case eView.both:
