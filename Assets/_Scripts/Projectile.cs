@@ -25,7 +25,9 @@ public class Projectile : MonoBehaviour{
         prevPos = new Vector3(1000,1000,0);
         deltas.Add( 1000 );
 
-        PROJECTILES.ADD( this );
+         
+        // ERROR - method named Add, not ADD -> PROJECTILES.ADD( this );
+        PROJECTILES.Add(this);
     }
 
     // Update is called once per frame
